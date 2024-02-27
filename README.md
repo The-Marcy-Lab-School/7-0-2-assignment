@@ -22,7 +22,7 @@ Do them first!
 
 ## Tech Checklist
 
-There are 13 tasks to complete and 2 bonuses.
+There are 10 tasks to complete and 2 bonuses.
 
 Your goal is to meet at least 75% of these requirements to complete the assignment. But don't stop there! Shoot for 100%!
 
@@ -32,7 +32,6 @@ Your goal is to meet at least 75% of these requirements to complete the assignme
 - [ ] The app updates the gifs on the page, displaying 3 at a time, **every time the user clicks the Find Gifs button**.
 
 **React Fundamentals**
-- [ ] Component names use PascalCase (`MyComponent` instead of `myComponent`)
 - [ ] Props are extracted in child components using destructuring
 - [ ] `useState` is used to manage state
 - [ ] `useEffect` is used to perform an asynchronous fetch call.
@@ -42,8 +41,6 @@ Your goal is to meet at least 75% of these requirements to complete the assignme
 - [ ] Bonus: modify the `useEffect` hook to be re-triggered whenever the user input changes (not just when they click the button).
 
 **Miscellaneous**
-- [ ] Used Vite to create the project
-- [ ] Each component is in its own file (1 export per file)
 - [ ] At no point did you ever use any vanilla DOM JS methods (e.g. `document.querySelector` or `document.createElement`)
 - [ ] Bonus: Your project has some extra CSS styling!
 
