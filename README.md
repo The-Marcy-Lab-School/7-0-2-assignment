@@ -1,28 +1,44 @@
 # Giphy Search Lab 
 
-## Short Responses
-
-Do them first!
-
-## App Overview
-
 In this assignment, you will be building out the following project using React's `useEffect` hook. You **must** fetch to the Giphy API and you **must** use a controlled form.
 
 ![demo](./demo.gif)
 
+**Table of Contents**
+- [Short Responses](#short-responses)
+- [Tech Checklist](#tech-checklist)
+- [Set Up \& Starter Code](#set-up--starter-code)
+- [API](#api)
+  - [Hiding Your API key from Github](#hiding-your-api-key-from-github)
+- [Coding Tips:](#coding-tips)
+  - [Fetching with useEffect](#fetching-with-useeffect)
+  - [Controlled Forms](#controlled-forms)
+  - [Rendering a List](#rendering-a-list)
+
+
+## Short Responses
+
+Do them first!
+
 ## Tech Checklist
 
-- [ ] When a user first load the app, they should see 3 gifs from today's [Trending Gifs](https://developers.giphy.com/docs/api/endpoint#trending) **as an unordered list**.
-- [ ] The user can search for gifs using the [Giphy API](https://developers.giphy.com/docs/api/endpoint#search)
+Your goal is to meet at least 75% of these requirements to complete the assignment. But don't stop there! Shoot for 100%!
+
+- [ ] When a user first loads the app, they should see 3 gifs from today's [Giphy API "Trending Gifs" endpoint](https://developers.giphy.com/docs/api/endpoint#trending).
+- [ ] The user can search for gifs using the [Giphy API search endpoint](https://developers.giphy.com/docs/api/endpoint#search).
 - [ ] The app updates the gifs on the page, displaying 3 at a time, **every time the user clicks the Find Gifs button**.
+- [ ] `useEffect` is used to perform an asynchronous fetch call.
+- [ ] The gifs are displayed as an unordered list (`ul`)
+- [ ] Every `li` in the `ul` has a unique `key` prop
 - [ ] The form is a controlled form.
-- [ ] As a bonus, modify the `useEffect` hook to be re-triggered whenever the user input changes.
+- [ ] `useState` is used to manage state
+- [ ] Component names use PascalCase (`MyComponent` instead of `myComponent`)
+- [ ] Props are extracted in child components using destructuring
+- [ ] Bonus: modify the `useEffect` hook to be re-triggered whenever the user input changes (not just when they click the button).
 
-## Set Up
+## Set Up & Starter Code
 
-Run `npm install` to download dependency. Then run `npm run dev` to run the app.
-
-## Starter Code
+Run `npm install` to download dependencies. Then run `npm run dev` to run the app.
 
 There is a good amount of starter code created for you. Take some time to draw out the component hierarchy. Take your time to really understand each component and how they work will with each other. **You are allowed to create as many additional components as you want**.
 
@@ -40,15 +56,91 @@ https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&limit=3&rating=g
 https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={query}&limit=3&rating=g
 ```
 
-## Hiding Your API key from Github
+### Hiding Your API key from Github
 
-- Create a `config.js` file with the following:
+It is a bad practice to push any code that exposes your API key to your repo. You NEVER want to deploy an app that does this in any way.
+
+The technique below will not work for deployed apps but this app will only be used locally so it is okay:
+
+- Create a `config.js` file with the following (the name of the file is arbitrary):
 
 ```js
-const API_KEY = "YOUR_API_KEY";
+const API_KEY = "PASTE_YOUR_API_KEY_HERE";
 
 export default API_KEY;
 ```
 
-- Add `config.js` to your `.gitignore` file
-- Whenever you need the `API_KEY`, import it.
+- Open the `.gitignore` file and add a line of text with the name of your file `config.js`
+- Wherever you need the `API_KEY`, import it from `config.js`
+
+```js
+import API_KEY from 'path/to/config.js'
+```
+
+## Coding Tips:
+
+### Fetching with useEffect
+
+* We CANNOT use an async callback with useEffect
+* We have to define an async function within the useEffect callback and then invoke it
+* The second argument to `useEffect` is the dependency array:
+  * `[]` - An empty array means the effect will run only on the first render
+  * `[a, b, c]` - Adding variables to the array will trigger the effect to run when those variables change
+  * No array provided will trigger the effect to run EVERY time the component re-renders
+
+```jsx
+useEffect(() => {
+  const doFetch = async () => {
+    // logic to fetch
+  };
+  doFetch();
+
+}, []); // <-- dependency array
+```
+
+### Controlled Forms
+
+* A controlled form uses `useState` to manage the current input value of text input elements
+* The `value` prop of the `<input>` element uses the state value
+* The `onChange` prop of the `<input>` element invokes the state setter function with `e.target.value`
+
+```js
+function Form({handleSubmit}) {
+    const [inputValue, setInputValue] = useState('');
+
+    const handleChange = (e) => {
+      setInputValue(e.target.value)
+    }
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="textInput">Enter Some Text </label>
+        <input type="text" id="textInput" value={inputValue} onChange={handleChange} />
+        <button type="submit">Submit</button>
+      </form>
+    )
+}
+```
+
+### Rendering a List
+
+* When we have an array that we want to render, use a `ul`
+* Use `.map` to convert each element in the array to a `li`
+* Each `li` should have a unique `key` value (often the id of the element)
+
+```jsx
+function List({ thingsToRender }) {
+  return (
+    <ul>
+      {
+        thingsToRender.map((thing) => (
+          <li key={thing.id}>
+            <p>{thing.information}</p>
+          </li>
+        ))
+      }
+    </ul>
+  )
+}
+```
+
