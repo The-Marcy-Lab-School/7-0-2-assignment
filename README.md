@@ -89,21 +89,33 @@ import API_KEY from 'path/to/config.js'
 
 ### Fetching with useEffect
 
-* We CANNOT use an async callback with useEffect
-* We have to define an async function within the useEffect callback and then invoke it
+* Remember to create state for the data and the error
+* We CANNOT use an `async` callback with useEffect
+* We have to define an `async` function within the useEffect callback and then invoke it
 * The second argument to `useEffect` is the dependency array:
   * `[]` - An empty array means the effect will run only on the first render
   * `[a, b, c]` - Adding variables to the array will trigger the effect to run when those variables change
   * No array provided will trigger the effect to run EVERY time the component re-renders
 
 ```jsx
-useEffect(() => {
-  const doFetch = async () => {
-    // logic to fetch
-  };
-  doFetch();
+const DataComponent = () => {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState('')
 
-}, []); // <-- dependency array
+  useEffect(() => {
+    const doFetch = async () => {
+      try {
+        const [data, error] = await handleFetch(url);
+        if (data) setData(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+    doFetch();
+  }, [query])
+
+  // code to render the data or the error
+}
 ```
 
 ### Controlled Forms
@@ -116,14 +128,10 @@ useEffect(() => {
 function Form({handleSubmit}) {
     const [inputValue, setInputValue] = useState('');
 
-    const handleChange = (e) => {
-      setInputValue(e.target.value)
-    }
-
     return (
       <form onSubmit={handleSubmit}>
         <label htmlFor="textInput">Enter Some Text </label>
-        <input type="text" id="textInput" value={inputValue} onChange={handleChange} />
+        <input type="text" id="textInput" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
         <button type="submit">Submit</button>
       </form>
     )
