@@ -104,12 +104,9 @@ const DataComponent = () => {
 
   useEffect(() => {
     const doFetch = async () => {
-      try {
-        const [data, error] = await handleFetch(url);
-        if (data) setData(data);
-      } catch (error) {
-        setError(error.message);
-      }
+      const [data, error] = await handleFetch(url);
+      if (data) setData(data);
+      if (error) setError(error.message);
     }
     doFetch();
   }, [query])
