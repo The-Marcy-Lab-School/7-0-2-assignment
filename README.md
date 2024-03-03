@@ -141,6 +141,7 @@ function Form({handleSubmit}) {
 ### Rendering a List
 
 * When we have an array that we want to render, use a `ul`
+* We use the `thingsToRender?.map` syntax to only map over the array if it is defined
 * Use `.map` to convert each element in the array to a `li`
 * Each `li` should have a unique `key` value (often the id of the element)
 
@@ -149,7 +150,7 @@ function List({ thingsToRender }) {
   return (
     <ul>
       {
-        thingsToRender.map((thing) => (
+        thingsToRender?.map((thing) => (
           <li key={thing.id}>
             <p>{thing.information}</p>
           </li>
