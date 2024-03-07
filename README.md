@@ -104,12 +104,12 @@ const DataComponent = () => {
 
   useEffect(() => {
     const doFetch = async () => {
-      const [data, error] = await handleFetch(url);
+      const [data, error] = await fetchData('http://someAPI');
       if (data) setData(data);
       if (error) setError(error.message);
     }
     doFetch();
-  }, [query])
+  }, []); // empty array will run only once
 
   // code to render the data or the error
 }
