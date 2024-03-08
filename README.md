@@ -54,17 +54,22 @@ There is a good amount of starter code created for you. Take some time to draw o
 
 You will be using the [Giphy API](https://developers.giphy.com/docs/api#quick-start-guide) and will need to register for an API key.
 
-The endpoints you should use are:
+The endpoints you should use are the `/v1/gifs/trending` endpoint:
 
 ```
 https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&limit=3&rating=g
 ```
 
+and the `/v1/gifs/search` endpoint:
+
 ```
 https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={query}&limit=3&rating=g
 ```
 
-### Hiding Your API key from Github
+For each of these, DO NOT paste your API key directly into your code. Follow the next set of steps to properly hide your API key from GitHub.
+
+
+### Hiding Your API key from GitHub
 
 It is a bad practice to push any code that exposes your API key to your repo. You NEVER want to deploy an app that does this in any way.
 
