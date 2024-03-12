@@ -66,6 +66,8 @@ and the `/v1/gifs/search` endpoint:
 https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={query}&limit=3&rating=g
 ```
 
+The data returned by these endpoints will be an object with a `data` array of gif objects. Each gif will have an `images` array containing the URLs of the gifs to display.
+
 For each of these, DO NOT paste your API key directly into your code. Follow the next set of steps to properly hide your API key from GitHub.
 
 
