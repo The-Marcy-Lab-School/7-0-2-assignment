@@ -9,8 +9,9 @@ In this assignment, you will be building out the following project using React's
 - [Tech Checklist](#tech-checklist)
 - [Set Up \& Starter Code](#set-up--starter-code)
 - [API](#api)
-  - [Hiding Your API key from Github](#hiding-your-api-key-from-github)
+  - [Hiding Your API key from GitHub](#hiding-your-api-key-from-github)
 - [Coding Tips:](#coding-tips)
+  - [Adapters + handleFetch](#adapters--handlefetch)
   - [Fetching with useEffect](#fetching-with-useeffect)
   - [Controlled Forms](#controlled-forms)
   - [Rendering a List](#rendering-a-list)
@@ -94,6 +95,12 @@ import API_KEY from 'path/to/config.js'
 ```
 
 ## Coding Tips:
+
+### Adapters + handleFetch
+
+We've provided a directory called **src/adapters/** for you with two files:
+1. **handleFetch.js** which exports a `handleFetch` helper function
+1. **giphyAdapters.js** which 
 
 ### Fetching with useEffect
 

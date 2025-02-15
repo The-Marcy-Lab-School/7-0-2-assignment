@@ -3,7 +3,7 @@ const colors = {
   white: 'navbar-default'
 }
 
-function NavBar({ color, title }) {
+const NavBar = ({ color, title }) => {
   return (
     <nav className={`navbar ${colors[color]}`}>
       <div className='container-fluid'>
