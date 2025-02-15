@@ -21,3 +21,12 @@ export const handleFetch = async (url, options = {}) => {
   }
 };
 
+const testExample = () => {
+  const [data, error] = handleFetch('https://dog.ceo/api/breeds/image/random');
+  if (error) {
+    return console.log(error);
+  }
+  console.log(data);
+}
+
+// testExample() // <-- uncomment this and run this file in Node to see it work!

@@ -8,13 +8,18 @@ In this assignment, you will be building out the following project using React's
 - [Short Responses](#short-responses)
 - [Tech Checklist](#tech-checklist)
 - [Set Up \& Starter Code](#set-up--starter-code)
-- [API](#api)
-  - [Hiding Your API key from GitHub](#hiding-your-api-key-from-github)
-- [Coding Tips:](#coding-tips)
+  - [API](#api)
+- [Tasks](#tasks)
+  - [GitIgnore Your API Key](#gitignore-your-api-key)
+    - [TODO 1](#todo-1)
   - [Adapters + handleFetch](#adapters--handlefetch)
-  - [Fetching with useEffect](#fetching-with-useeffect)
-  - [Controlled Forms](#controlled-forms)
-  - [Rendering a List](#rendering-a-list)
+    - [handleFetch.js](#handlefetchjs)
+    - [giphyAdapters.js](#giphyadaptersjs)
+    - [TODO 2](#todo-2)
+  - [Running Async Processes with useEffect](#running-async-processes-with-useeffect)
+    - [TODO 3](#todo-3)
+  - [Controlled Search Forms](#controlled-search-forms)
+    - [TODO 4](#todo-4)
 
 
 ## Short Responses
@@ -52,33 +57,35 @@ Run `npm install` to download dependencies. Then run `npm run dev` to run the ap
 
 There is a good amount of starter code created for you. Take some time to draw out the component hierarchy. Take your time to really understand each component and how they work will with each other. **You are allowed to create as many additional components as you want**.
 
-## API 
+### API 
 
 You will be using the [Giphy API](https://developers.giphy.com/docs/api#quick-start-guide) and will need to register for an API key.
 
 The endpoints you should use are the `/v1/gifs/trending` endpoint:
 
 ```
-https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&limit=3&rating=g
+https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&rating=g
 ```
 
 and the `/v1/gifs/search` endpoint:
 
 ```
-https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={query}&limit=3&rating=g
+https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={query}&rating=g
 ```
 
 The data returned by these endpoints will be an object with a `data` array of gif objects. Each gif will have an `images` array containing the URLs of the gifs to display.
 
 For each of these, DO NOT paste your API key directly into your code. Follow the next set of steps to properly hide your API key from GitHub.
 
+## Tasks
 
-### Hiding Your API key from GitHub
+### GitIgnore Your API Key
 
 It is a bad practice to push any code that exposes your API key to your repo. You NEVER want to deploy an app that does this in any way.
 
-The technique below will not work for deployed apps but this app will only be used locally so it is okay:
+> NOTE: The technique below will not protect your API key if you were to deploy it. You need to deploy a backend to properly hide your API keys.
 
+#### TODO 1
 - Create a `config.js` file with the following (the name of the file is arbitrary):
 
 ```js
@@ -94,82 +101,94 @@ export default API_KEY;
 import API_KEY from 'path/to/config.js'
 ```
 
-## Coding Tips:
-
 ### Adapters + handleFetch
 
-We've provided a directory called **src/adapters/** for you with two files:
-1. **handleFetch.js** which exports a `handleFetch` helper function
-1. **giphyAdapters.js** which 
+An **adapter** is essentially a "transition layer" that connects two different interfaces. Think of it just like the power adapter (a.k.a. the "brick") that converts the USB-C connector on your charging cable to the standard three-prong electrical connector.
 
-### Fetching with useEffect
+In our case, the adapter layer will provide functions for sending fetch requests to the APIs used by our application.
 
-* Remember to create state for the data and the error
-* We CANNOT use an `async` callback with useEffect
-* We have to define an `async` function within the useEffect callback and then invoke it
-* The second argument to `useEffect` is the dependency array:
-  * `[]` - An empty array means the effect will run only on the first render
-  * `[a, b, c]` - Adding variables to the array will trigger the effect to run when those variables change
-  * No array provided will trigger the effect to run EVERY time the component re-renders
+To support this pattern, we've provided a directory called **src/adapters/** for you with two files:
 
-```jsx
-const DataComponent = () => {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState('')
+#### handleFetch.js
 
-  useEffect(() => {
-    const doFetch = async () => {
-      const [data, error] = await fetchData('http://someAPI');
-      if (data) setData(data);
-      if (error) setError(error.message);
-    }
-    doFetch();
-  }, []); // empty array will run only once
+This file exports a `handleFetch` helper function. It always returns a "tuple" — an array with two values: `[data, error]`. 
 
-  // code to render the data or the error
-}
-```
+In the event that the fetch is successful, the first value in the array will contain the fetched data while the second value will be `null` (no error exists).
 
-### Controlled Forms
-
-* A controlled form uses `useState` to manage the current input value of text input elements
-* The `value` prop of the `<input>` element uses the state value
-* The `onChange` prop of the `<input>` element invokes the state setter function with `e.target.value`
+In the event that the fetch was NOT successful, the first value in the array will be `null` while the second value will be the error object. Typically, we interact with this function like so:
 
 ```js
-function Form({handleSubmit}) {
-    const [inputValue, setInputValue] = useState('');
-
-    return (
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="textInput">Enter Some Text </label>
-        <input type="text" id="textInput" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-        <button type="submit">Submit</button>
-      </form>
-    )
+const doFetch = () => {
+  // immediately destructure the returned tuple
+  const [data, error] = handleFetch('http://someurl.api.endpoint');
+  if (error) {
+    // handle the error. maybe you render an error message.
+    return;
+  }
+  // otherwise, render the data
 }
 ```
 
-### Rendering a List
+#### giphyAdapters.js
 
-* When we have an array that we want to render, use a `ul`
-* We use the `thingsToRender?.map` syntax to only map over the array if it is defined
-* Use `.map` to convert each element in the array to a `li`
-* Each `li` should have a unique `key` value (often the id of the element)
+This file exports two functions for fetching from various endpoints from the GIPHY API. Each function's sole purpose is to send a fetch request using the `handleFetch` helper and return the data in a desired format. 
 
-```jsx
-function List({ thingsToRender }) {
-  return (
-    <ul>
-      {
-        thingsToRender?.map((thing) => (
-          <li key={thing.id}>
-            <p>{thing.information}</p>
-          </li>
-        ))
-      }
-    </ul>
-  )
+For example, an adapter to fetch a dog image from the [Dog API](https://dog.ceo/dog-api/) might look like this:
+
+```js
+const getDogImageByBreed = (breed) => {
+  const url = `https://dog.ceo/api/breed/${breed}/images/random`;
+  return handleFetch(url);
 }
 ```
+
+Your first task will be to complete these functions
+
+#### TODO 2
+
+In **giphyAdapters.js**
+- Import the API Key from your `config.js` file
+- Complete the `getTrendingGifs` adapter to fetch from the `trending/` endpoint
+
+  ```
+  https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&rating=g
+  ```
+
+  It should return a tuple containing the first three gifs fetched from this endpoint and the error (remember, the error will be `null` if the fetch is successful).
+
+- Complete the `getGifsBySearch` adapter to fetch from the `search/` endpoint based on a given `searchTerm`
+
+  ```
+  https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={searchTerm}&rating=g
+  ```
+
+  It should return a tuple containing the first three gifs fetched from this endpoint and the error (remember, the error will be `null` if the fetch is successful).
+
+### Running Async Processes with useEffect
+
+Once you have your adapters up and running, you will want to use them in the `GifContainer` component which will render the fetched gifs.
+
+This component is meant to display gifs. However, there are two different sets of gifs that this component can display, depending on the user's actions. At first, they should see trending gifs but after submitting a search term in the GifSearch form, they should see gifs related to their search.
+
+For now, we'll handle the trending gifs.
+
+#### TODO 3
+
+- Use the `getTrendingGifs` adapter to fetch trending gifs on the first render (and only on the first render)
+- The component should render the first three gifs returned from the `trending/` endpoint inside the `ul` as list items containing an `img` (did you know you can use `img` to render gifs??).
+  - Remember to assign each list item a `key`
+
+> TIP: Use `console.log` to print out the fetched gifs to see the data's structure. You should be looking for "original URL" of the image.
+
+### Controlled Search Forms
+
+Now that your app can render the trending gifs, we want to allow our users to search for gifs. Check out the `GifSearch` component.
+
+This component is meant to contain a controlled form (a form whose input values) are controlled by a piece of React state (with `useState`). However, the final submitted value(s) of the form needs to be shared with the `GifContainer` so be careful about where you define your final submitted state!
+
+#### TODO 4
+
+- Convert the form in `GifSearch` into a controlled form.
+- Handle form submissions by setting a `searchTerm` state value that can be shared with the `GifContainer` component (where should this state be defined? how can it be shared with `GifContainer`?)
+- Once the `searchTerm` value is shared with the `GifContainer`, add an effect that uses the `getGifsBySearch` adapter to fetch and render the searched-for gifs any time that the `searchTerm` state is updated.
 
