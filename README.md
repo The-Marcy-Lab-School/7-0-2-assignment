@@ -16,7 +16,7 @@ In this assignment, you will be building out the following project using React's
     - [handleFetch.js](#handlefetchjs)
     - [giphyAdapters.js](#giphyadaptersjs)
     - [TODO 2](#todo-2)
-  - [Running Async Processes with useEffect](#running-async-processes-with-useeffect)
+  - [Running Async Processes with useEffect \& Rendering the Gifs](#running-async-processes-with-useeffect--rendering-the-gifs)
     - [TODO 3](#todo-3)
   - [Controlled Search Forms](#controlled-search-forms)
     - [TODO 4](#todo-4)
@@ -36,6 +36,7 @@ Your goal is to meet at least 75% of these requirements to complete the assignme
 - [ ] When a user first loads the app, they should see 3 gifs from today's [Giphy API "Trending Gifs" endpoint](https://developers.giphy.com/docs/api/endpoint#trending).
 - [ ] The user can search for gifs using the [Giphy API search endpoint](https://developers.giphy.com/docs/api/endpoint#search).
 - [ ] The app updates the gifs on the page, displaying 3 at a time, **every time the user clicks the Find Gifs button**.
+- [ ] Bonus: if an error occurs, the `defaultGifs` from `gifs.json` are displayed along with a message reading `"Sorry, the GIPHY API is not working, but here are some cats"`.
 
 **React Fundamentals**
 - [ ] Props are extracted in child components using destructuring
@@ -171,13 +172,17 @@ In **giphyAdapters.js**
 
   It should return a tuple containing the first three gifs fetched from this endpoint and the error (remember, the error will be `null` if the fetch is successful).
 
-### Running Async Processes with useEffect
+### Running Async Processes with useEffect & Rendering the Gifs
 
-Once you have your adapters up and running, you will want to use them in the `GifContainer` component which will render the fetched gifs.
+Open **src/components/GifContainer.jsx**.
+
+Once you have your adapters built, you will want to use them in the `GifContainer` component which will render the fetched gifs.
 
 This component is meant to display gifs. However, there are two different sets of gifs that this component can display, depending on the user's actions. At first, they should see trending gifs but after submitting a search term in the GifSearch form, they should see gifs related to their search.
 
 For now, we'll handle the trending gifs.
+
+> Note: If you're struggling to get your fetching adapters to work with the GIPHY API, you can render the list of `gifs` in the `src/gifs.js` file instead. This file has been imported for you as `defaultGifs` and the gifs in this file are in the same structure as the gifs you would receive when fetching from the GIPHY API.
 
 #### TODO 3
 

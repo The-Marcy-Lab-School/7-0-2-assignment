@@ -5,35 +5,40 @@ useState — we create a piece of state for the fetched gifs. Depending on the u
 
 useEffect — we run the effect to fetch the gifs using the getTrendingGifs adapter and set the gifs state. If the searchTerm prop changes, we will run the effect  again, this time using the getGifsBySearch adapter.
 */
-
+import defaultGifs from '../gifs.json'
 import { useEffect, useState } from 'react';
-import { getGifsBySearch, getTrendingGifs } from '../adapters/giphyAdapters';
+import { getGifsBySearch, getTrendingGifs } from '../adapters/giphyAdapters-solution';
 
 const GifContainer = ({ searchTerm }) => {
-    const [gifs, setGifs] = useState([]);
+    const [gifs, setGifs] = useState(defaultGifs);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchGifs = async () => {
             const [data, error] = searchTerm ? await getGifsBySearch(searchTerm) : await getTrendingGifs();
-            if (error) setError(error);
-            if (data) setGifs(data);
+            if (error) {
+                console.log('error')
+                setError(error);
+                setGifs(defaultGifs);
+            }
+            else if (data) setGifs(data);
         }
         fetchGifs();
     }, [searchTerm]);
 
-    console.log('searchTerm: ', searchTerm, 'gifs', gifs)
-
     return (
-        <ul>
-            {
-                gifs.map((gif) => (
-                    <li key={gif.id}>
-                        <img src={gif.images.original.url} alt={gif.alt_text} />
-                    </li>
-                ))
-            }
-        </ul>
+        <>
+            {error ? (<p>Sorry, the GIPHY API is not working, but here are some cats coding...</p>) : ""}
+            <ul>
+                {
+                    gifs.map((gif) => (
+                        <li key={gif.id}>
+                            <img src={gif.images.original.url} alt={gif.alt_text} />
+                        </li>
+                    ))
+                }
+            </ul>
+        </>
     )
 }
 

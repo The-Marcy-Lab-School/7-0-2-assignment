@@ -5,6 +5,8 @@ TODO:
 - Convert this form into a controlled form
 - Handle form submissions by setting a searchTerm state value that can be shared with the GifContainer component
 */
+import { useState } from "react";
+
 const GifSearch = ({ setSearchTerm }) => {
     const [input, setInput] = useState('');
 

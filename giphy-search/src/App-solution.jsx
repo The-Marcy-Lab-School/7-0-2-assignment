@@ -7,8 +7,8 @@ TODO:
 */
 
 import NavBar from './components/NavBar'
-import GifContainer from './components/GifContainer'
-import GifSearch from './components/GifSearch'
+import GifContainer from './components/GifContainer-solution'
+import GifSearch from './components/GifSearch-solution'
 import { useState } from 'react';
 
 const App = () => {
