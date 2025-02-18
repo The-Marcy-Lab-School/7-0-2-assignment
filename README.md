@@ -111,23 +111,30 @@ To support this pattern, we've provided a directory called **src/adapters/** for
 
 #### handleFetch.js
 
-This file exports a `handleFetch` helper function. It always returns a "tuple" — an array with two values: `[data, error]`. 
+This file exports a `handleFetch` helper function. This function's behavior should mostly be familiar to you. This particular implementation always returns a "tuple" — an array with two values: `[data, error]`. 
 
-In the event that the fetch is successful, the first value in the array will contain the fetched data while the second value will be `null` (no error exists).
-
-In the event that the fetch was NOT successful, the first value in the array will be `null` while the second value will be the error object. Typically, we interact with this function like so:
+It can be used like this (run the file to see this test example in action):
 
 ```js
-const doFetch = () => {
+const testExample = () => {
   // immediately destructure the returned tuple
-  const [data, error] = handleFetch('http://someurl.api.endpoint');
+  const [data, error] = handleFetch('https://dog.ceo/api/breeds/image/random');
   if (error) {
     // handle the error. maybe you render an error message.
-    return;
+    return console.log(error);
   }
   // otherwise, render the data
+  console.log(data);
 }
 ```
+
+When we fetch, there are basically two outcomes: we get the data we fetched or an error is thrown. Rather than returning a single value, either the data OR the error, we return two values:
+- If the fetch succeeds, the `data` value will be the fetched `data` object while the `error` value will be `null`. 
+- If an error is thrown, the `data` value will be `null` while the `error` value will be the thrown `error` object.
+
+By returning a tuple, the caller of this `handleFetch` helper is able to immediately know whether or not an `error` occurred. If the `error` exists, then we can easily handle it. If the `error` is `null`, then we know that the `data` was fetched successfully.
+
+If we only returned a single value, either the data OR the error, then the caller of `handleFetch` would need to add their own logic to determine if they are receiving an error object or fetched data. Instead, the returned tuple makes this distinction abundantly clear.
 
 #### giphyAdapters.js
 
