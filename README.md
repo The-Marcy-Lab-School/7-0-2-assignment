@@ -1,6 +1,11 @@
 # Giphy Search
 
-In this assignment, you will be building out the following project using React's `useEffect` hook. You **must** fetch to the Giphy API and you **must** use a controlled form.
+In this assignment, you will be building out a fun project to fetch Gifs from the GIPHY API. You'll be practicing the following skills
+- fetching from an API using the adapter pattern
+- using React's `useEffect` hook
+- rendering an array of data as a list
+- creating a controlled form
+- sharing state between components
 
 ![demo](./demo.gif)
 
