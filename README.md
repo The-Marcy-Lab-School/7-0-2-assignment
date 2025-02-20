@@ -1,6 +1,7 @@
 # Giphy Search
 
 In this assignment, you will be building out a fun project to fetch Gifs from the GIPHY API. You'll be practicing the following skills
+- working with an API key
 - fetching from an API using the adapter pattern
 - using React's `useEffect` hook
 - rendering an array of data as a list
