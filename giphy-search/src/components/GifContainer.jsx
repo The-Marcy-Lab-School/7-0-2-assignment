@@ -8,7 +8,7 @@ TODO:
 - Bonus: if at any point an error is returned, render the default gifs again.
 */
 
-import defaultGifs from '/gifs.json';
+import defaultGifs from '../gifs.json';
 import { getGifsBySearch, getTrendingGifs } from '../adapters/giphyAdapters';
 
 const GifContainer = () => {
