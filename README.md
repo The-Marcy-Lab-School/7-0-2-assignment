@@ -5,7 +5,6 @@ In this assignment, you will be building out the following project using React's
 ![demo](./demo.gif)
 
 **Table of Contents**
-- [Short Responses](#short-responses)
 - [Tech Checklist](#tech-checklist)
 - [Set Up \& Starter Code](#set-up--starter-code)
   - [API](#api)
@@ -22,13 +21,11 @@ In this assignment, you will be building out the following project using React's
     - [TODO 4](#todo-4)
 
 
-## Short Responses
-
-Do them first!
-
 ## Tech Checklist
 
-There are 10 tasks to complete and 2 bonuses.
+Like the last assignment, there are no tests. Instead, there are technical requirements that your application must meet which means you will need to test your own code!
+
+There are 10 tasks to complete and 3 bonuses. As you work, return to this README file and check off each task by putting an `x` inside of the brackets `[ ]`.
 
 Your goal is to meet at least 75% of these requirements to complete the assignment. But don't stop there! Shoot for 100%!
 
@@ -114,24 +111,26 @@ To support this pattern, we've provided a directory called **src/adapters/** for
 
 This file exports a `handleFetch` helper function. This function's behavior should mostly be familiar to you. This particular implementation always returns a "tuple" — an array with two values: `[data, error]`. 
 
-It can be used like this (run the file to see this test example in action):
+Open the **playground.js** file and run it with `node` to see how this function may be used throughout your application:
 
 ```js
-const testExample = () => {
-  // immediately destructure the returned tuple
-  const [data, error] = handleFetch('https://dog.ceo/api/breeds/image/random');
+import { handleFetch } from "./adapters/handleFetch.js";
+
+const testHandleFetch = async () => {
+  const [data, error] = await handleFetch('https://dog.ceo/api/breeds/image/random');
   if (error) {
-    // handle the error. maybe you render an error message.
     return console.log(error);
   }
-  // otherwise, render the data
+  // no error means that our data was fetched!
   console.log(data);
 }
+
+testHandleFetch();
 ```
 
-When we fetch, there are basically two outcomes: we get the data we fetched or an error is thrown. Rather than returning a single value, either the data OR the error, we return two values:
-- If the fetch succeeds, the `data` value will be the fetched `data` object while the `error` value will be `null`. 
-- If an error is thrown, the `data` value will be `null` while the `error` value will be the thrown `error` object.
+When we fetch, there are basically two outcomes: we get the data we fetched or an error is thrown. Rather than returning either the data OR the error, we return two values:
+- If the fetch succeeds, the `data` value in the array will be the fetched `data` object while the `error` value will be `null`. 
+- If an error is thrown, the `data` value in the array will be `null` while the `error` value will be the thrown `error` object.
 
 By returning a tuple, the caller of this `handleFetch` helper is able to immediately know whether or not an `error` occurred. If the `error` exists, then we can easily handle it. If the `error` is `null`, then we know that the `data` was fetched successfully.
 
@@ -164,7 +163,7 @@ In **giphyAdapters.js**
   https://api.giphy.com/v1/gifs/trending?api_key={API_KEY}&rating=g
   ```
 
-  It should return a tuple containing the first three gifs fetched from this endpoint and the error (remember, the error will be `null` if the fetch is successful).
+  It should return a tuple containing the first three `gifs` fetched from this endpoint and the `error` (remember, the `error` will be `null` if the fetch is successful).
 
 - Complete the `getGifsBySearch` adapter to fetch from the `search/` endpoint based on a given `searchTerm`
 
@@ -172,9 +171,28 @@ In **giphyAdapters.js**
   https://api.giphy.com/v1/gifs/search?api_key={API_KEY}&q={searchTerm}&rating=g
   ```
 
-  It should return a tuple containing the first three gifs fetched from this endpoint and the error (remember, the error will be `null` if the fetch is successful).
+  It should return a tuple containing the first three `gifs` fetched from this endpoint and the `error` (remember, the `error` will be `null` if the fetch is successful).
 
-Before continuing, test your completed adapter functions to ensure they work. Simply invoke your functions, console log the results, and run the adapter file using `node`.
+In **playground.js**:
+* Before continuing, test your completed adapter functions to ensure they work. 
+* Import your functions and console log the results. 
+
+```js
+// in playground.js...
+import { getTrendingGifs, getGifsBySearch } from "./adapters/giphyAdapters";
+
+const testAdapters = async () => {
+  const trendingTuple = await getTrendingGifs();
+  const searchTuple = await getGifsBySearch();
+
+  console.log(trendingTuple);
+  console.log(searchTuple);
+}
+
+testAdapters();
+```
+
+* Run the playground file using `node`.
 
 ### Running Async Processes with useEffect & Rendering the Gifs
 
@@ -186,7 +204,7 @@ This component is meant to display gifs. However, there are two different sets o
 
 For now, we'll handle the trending gifs.
 
-> Note: If you're struggling to get your fetching adapters to work with the GIPHY API, you can render the list of `gifs` in the `src/gifs.js` file instead. This file has been imported for you as `defaultGifs` and the gifs in this file are in the same structure as the gifs you would receive when fetching from the GIPHY API.
+> Note: If you're struggling to get your fetching adapters to work with the GIPHY API, you can render the list of `defaultGifs` imported from the `src/gifs.json` file instead. The gifs in this file are in the same structure as the gifs you would receive when fetching from the GIPHY API.
 
 #### TODO 3
 

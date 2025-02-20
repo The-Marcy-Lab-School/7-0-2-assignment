@@ -8,7 +8,7 @@ const baseUrl = 'https://api.giphy.com/v1/gifs'
 const baseUrlBroken = 'https://foo.bar.api';
 
 export const getTrendingGifs = async () => {
-  const [data, error] = await handleFetch(baseUrlBroken + `/trending?rating=g&api_key=${API_KEY}`);
+  const [data, error] = await handleFetch(baseUrl + `/trending?rating=g&api_key=${API_KEY}`);
   if (error) return [data, error];
 
   const gifs = data.data.slice(0, 3)
