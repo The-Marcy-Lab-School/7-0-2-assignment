@@ -146,7 +146,11 @@ For example, an adapter to fetch a dog image from the [Dog API](https://dog.ceo/
 ```js
 const getDogImageByBreed = (breed) => {
   const url = `https://dog.ceo/api/breed/${breed}/images/random`;
-  return handleFetch(url);
+  const [data, error] = handleFetch(URL);
+
+  // The data returned will look like this: { "message": "image_url_to_dog_picture", "status": "success" }
+  // The user of this adapter only cares about the message.
+  return [data.message, error]
 }
 ```
 
