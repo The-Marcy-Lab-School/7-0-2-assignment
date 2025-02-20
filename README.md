@@ -154,8 +154,6 @@ const getDogImageByBreed = (breed) => {
 }
 ```
 
-Your first task will be to complete these functions
-
 #### TODO 2
 
 In **giphyAdapters.js**
@@ -175,6 +173,8 @@ In **giphyAdapters.js**
   ```
 
   It should return a tuple containing the first three gifs fetched from this endpoint and the error (remember, the error will be `null` if the fetch is successful).
+
+Before continuing, test your completed adapter functions to ensure they work. Simply invoke your functions, console log the results, and run the adapter file using `node`.
 
 ### Running Async Processes with useEffect & Rendering the Gifs
 
