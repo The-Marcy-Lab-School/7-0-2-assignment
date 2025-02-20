@@ -95,7 +95,7 @@ const API_KEY = "PASTE_YOUR_API_KEY_HERE";
 export default API_KEY;
 ```
 
-- Open the `.gitignore` file and add a line of text with the name of your file `config.js`
+- Check out the `.gitignore` file and you will see that `config.js` has been listed. Therefore, any sensitive data you add to this file will NOT be published on GitHub.
 - Wherever you need the `API_KEY`, import it from `config.js`
 
 ```js
