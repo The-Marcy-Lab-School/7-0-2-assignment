@@ -1,4 +1,4 @@
-# Giphy Search Lab 
+# Giphy Search
 
 In this assignment, you will be building out the following project using React's `useEffect` hook. You **must** fetch to the Giphy API and you **must** use a controlled form.
 
